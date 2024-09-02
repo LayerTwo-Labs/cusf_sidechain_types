@@ -1,6 +1,7 @@
+use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
-use serde::{Deserialize, Serialize};
+pub const BLOCK_SIZE_LIMIT: usize = 1024 * 1024; // 1 MB by default.
 
 pub const MAIN_ADDRESS_LENGTH: usize = 20;
 pub const ADDRESS_LENGTH: usize = 20;
