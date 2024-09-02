@@ -7,7 +7,7 @@ pub const MAIN_ADDRESS_LENGTH: usize = 20;
 pub const ADDRESS_LENGTH: usize = 20;
 pub const HASH_LENGTH: usize = 32;
 
-#[derive(Debug, Clone, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, Hash, Eq, PartialEq, Serialize, Deserialize)]
 pub enum OutPoint {
     Regular {
         transaction_number: u64,
