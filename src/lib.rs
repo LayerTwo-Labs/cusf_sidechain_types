@@ -108,7 +108,7 @@ pub struct Header {
 // Wihdrawals
 
 impl Header {
-    fn compute_merkle_root(transactions: &[Transaction]) -> [u8; HASH_LENGTH] {
+    pub fn compute_merkle_root(transactions: &[Transaction]) -> [u8; HASH_LENGTH] {
         // TODO: Make this into proper merkle root, not just hash of concatenated hashes.
         let merkle_root: [u8; HASH_LENGTH] = blake3::hash(
             &transactions
