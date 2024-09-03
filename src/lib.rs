@@ -108,7 +108,7 @@ pub struct Header {
 // Wihdrawals
 
 impl Header {
-    fn validate_transactions(&self, transactions: &[Transaction]) -> bool {
+    fn compute_merkle_root(transactions: &[Transaction]) -> [u8; HASH_LENGTH] {
         // TODO: Make this into proper merkle root, not just hash of concatenated hashes.
         let merkle_root: [u8; HASH_LENGTH] = blake3::hash(
             &transactions
@@ -118,6 +118,11 @@ impl Header {
                 .concat(),
         )
         .into();
+        merkle_root
+    }
+
+    fn validate_transactions(&self, transactions: &[Transaction]) -> bool {
+        let merkle_root = Self::compute_merkle_root(transactions);
         self.merkle_root == merkle_root
     }
 }
