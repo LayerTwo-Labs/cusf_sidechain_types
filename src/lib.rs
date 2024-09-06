@@ -95,7 +95,6 @@ impl Transaction {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Header {
-    pub prev_main_block_hash: [u8; HASH_LENGTH],
     pub prev_side_block_hash: [u8; HASH_LENGTH],
     pub merkle_root: [u8; HASH_LENGTH],
 }
