@@ -107,21 +107,28 @@ pub struct Header {
 // Wihdrawals
 
 impl Header {
-    pub fn compute_merkle_root(transactions: &[Transaction]) -> [u8; HASH_LENGTH] {
+    pub fn compute_merkle_root(
+        coinbase: &[Output],
+        transactions: &[Transaction],
+    ) -> [u8; HASH_LENGTH] {
         // TODO: Make this into proper merkle root, not just hash of concatenated hashes.
         let merkle_root: [u8; HASH_LENGTH] = blake3::hash(
-            &transactions
-                .iter()
-                .map(|transaction| transaction.hash())
-                .collect::<Vec<_>>()
-                .concat(),
+            &[
+                vec![coinbase.hash()],
+                transactions
+                    .iter()
+                    .map(|transaction| transaction.hash())
+                    .collect::<Vec<_>>(),
+            ]
+            .concat()
+            .concat(),
         )
         .into();
         merkle_root
     }
 
-    fn validate_transactions(&self, transactions: &[Transaction]) -> bool {
-        let merkle_root = Self::compute_merkle_root(transactions);
+    fn validate_block(&self, coinbase: &[Output], transactions: &[Transaction]) -> bool {
+        let merkle_root = Self::compute_merkle_root(coinbase, transactions);
         self.merkle_root == merkle_root
     }
 }
