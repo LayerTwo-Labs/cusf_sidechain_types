@@ -128,7 +128,7 @@ impl Header {
 
 pub struct MainBlock {
     pub deposits: Vec<(OutPoint, Output)>,
-    pub withdrawal_bundle_events: WithdrawalBundleEvent,
+    pub withdrawal_bundle_event: Option<WithdrawalBundleEvent>,
     pub bmm_hashes: Vec<[u8; HASH_LENGTH]>,
 }
 
