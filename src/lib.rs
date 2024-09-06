@@ -126,6 +126,23 @@ impl Header {
     }
 }
 
+pub struct MainBlock {
+    deposits: Vec<(OutPoint, Output)>,
+    withdrawal_bundle_events: WithdrawalBundleEvent,
+    bmm_hashes: Vec<[u8; HASH_LENGTH]>,
+}
+
+pub struct WithdrawalBundleEvent {
+    withdrawal_bundle_event_type: WithdrawalBundleEventType,
+    bmm_hash: [u8; HASH_LENGTH],
+}
+
+pub enum WithdrawalBundleEventType {
+    Submitted,
+    Succeded,
+    Failed,
+}
+
 pub trait Hashable
 where
     Self: Serialize,
@@ -137,71 +154,3 @@ where
 }
 
 impl<T: Serialize> Hashable for T {}
-
-/*
-// Most significant bit is 1 when it is a deposit and 0 when not.
-// If it is a deposit, the remaining 63 bits represent the sequence number.
-// If it is a regular outpoint, the following 55 bits represent the transaction number, and the
-// remaining 8 bits represent the index.
-#[derive(Serialize, Deserialize)]
-pub struct OutPointEncoded(u64);
-
-impl Display for OutPointEncoded {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        if self.is_deposit() {
-            write!(f, "d:{}", self.number())
-        } else {
-            write!(f, "r:{}:{}", self.number(), self.index())
-        }
-    }
-}
-
-impl OutPointEncoded {
-    const DEPOSIT_MASK: u64 = 1u64.reverse_bits();
-    const DEPOSIT_NUMBER_MASK: u64 = !Self::DEPOSIT_MASK;
-    const INDEX_MASK: u64 = 0xFF;
-    const TRANSACTION_NUMBER_MASK: u64 = !Self::DEPOSIT_MASK & !Self::INDEX_MASK;
-
-    pub fn new(deposit: bool, number: u64, index: u8) -> Self {
-        let mut payload = 0;
-        if deposit {
-            if number & Self::DEPOSIT_MASK != 0 {
-                todo!();
-            }
-            payload = number | Self::DEPOSIT_MASK;
-        } else {
-            // If the 8 most significant bits are not 8, the transaction number is invalid.
-            if number & Self::INDEX_MASK.reverse_bits() != 0 {
-                todo!();
-            }
-            payload = number << 8;
-            if payload & !Self::TRANSACTION_NUMBER_MASK != 0 {
-                todo!();
-            }
-            payload |= index as u64;
-        }
-        Self(payload)
-    }
-
-    pub fn is_deposit(&self) -> bool {
-        self.0 & Self::DEPOSIT_MASK != 0
-    }
-
-    // Deposit number if it is a deposit, transaction number if it is a regular output.
-    pub fn number(&self) -> u64 {
-        if self.is_deposit() {
-            self.0 & Self::DEPOSIT_NUMBER_MASK
-        } else {
-            (self.0 & Self::TRANSACTION_NUMBER_MASK) >> 8
-        }
-    }
-
-    pub fn index(&self) -> u8 {
-        if self.is_deposit() {
-            0
-        } else {
-            (self.0 & Self::INDEX_MASK) as u8
-        }
-    }
-}
-*/
