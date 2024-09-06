@@ -127,14 +127,14 @@ impl Header {
 }
 
 pub struct MainBlock {
-    deposits: Vec<(OutPoint, Output)>,
-    withdrawal_bundle_events: WithdrawalBundleEvent,
-    bmm_hashes: Vec<[u8; HASH_LENGTH]>,
+    pub deposits: Vec<(OutPoint, Output)>,
+    pub withdrawal_bundle_events: WithdrawalBundleEvent,
+    pub bmm_hashes: Vec<[u8; HASH_LENGTH]>,
 }
 
 pub struct WithdrawalBundleEvent {
-    withdrawal_bundle_event_type: WithdrawalBundleEventType,
-    bmm_hash: [u8; HASH_LENGTH],
+    pub withdrawal_bundle_event_type: WithdrawalBundleEventType,
+    pub bmm_hash: [u8; HASH_LENGTH],
 }
 
 pub enum WithdrawalBundleEventType {
