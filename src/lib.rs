@@ -13,6 +13,10 @@ pub enum OutPoint {
         transaction_number: u64,
         output_number: u8,
     },
+    Coinbase {
+        block_number: u32,
+        output_number: u8,
+    },
     Deposit {
         sequence_number: u64,
     },
@@ -24,8 +28,12 @@ impl Display for OutPoint {
             Self::Regular {
                 transaction_number,
                 output_number,
-            } => write!(f, "r:{}:{}", transaction_number, output_number),
-            Self::Deposit { sequence_number } => write!(f, "d:{}", sequence_number),
+            } => write!(f, "r:{transaction_number}:{output_number}"),
+            Self::Coinbase {
+                block_number,
+                output_number,
+            } => write!(f, "c:{block_number}:{output_number}"),
+            Self::Deposit { sequence_number } => write!(f, "d:{sequence_number}"),
         }
     }
 }
