@@ -151,7 +151,7 @@ pub struct MainBlock {
 
 pub struct WithdrawalBundleEvent {
     pub withdrawal_bundle_event_type: WithdrawalBundleEventType,
-    pub bmm_hash: [u8; HASH_LENGTH],
+    pub m6id: [u8; HASH_LENGTH],
 }
 
 pub enum WithdrawalBundleEventType {
